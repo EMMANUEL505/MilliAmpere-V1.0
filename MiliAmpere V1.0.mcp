@@ -35,6 +35,9 @@ file_007=.
 file_008=.
 file_009=.
 file_010=.
+file_011=.
+file_012=.
+file_013=.
 [GENERATED_FILES]
 file_000=no
 file_001=no
@@ -47,6 +50,9 @@ file_007=no
 file_008=no
 file_009=no
 file_010=no
+file_011=no
+file_012=no
+file_013=no
 [OTHER_FILES]
 file_000=no
 file_001=no
@@ -59,8 +65,11 @@ file_007=no
 file_008=yes
 file_009=yes
 file_010=yes
+file_011=yes
+file_012=yes
+file_013=yes
 [FILE_INFO]
-file_000=C:\Users\e882742\Documents\Robotica\BabyFaraday V3.0\main.c
+file_000=main.c
 file_001=..\..\..\..\..\Program Files (x86)\PICC\devices\30f5015.h
 file_002=Config.h
 file_003=..\..\..\..\..\Program Files (x86)\PICC\drivers\stdlib.h
@@ -71,6 +80,9 @@ file_007=Functions.h
 file_008=C:\Users\e882742\Documents\Robotica\BabyFaraday V3.0\main.SYM
 file_009=C:\Users\e882742\Documents\Robotica\BabyFaraday V3.0\main.TRE
 file_010=C:\Users\e882742\Documents\Robotica\BabyFaraday V3.0\main.STA
+file_011=main.SYM
+file_012=main.TRE
+file_013=main.STA
 [SUITE_INFO]
 suite_guid={BA86BF99-4C07-4CE2-A9E7-C2A337910996}
 suite_state=

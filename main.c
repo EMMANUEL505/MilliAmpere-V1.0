@@ -4,43 +4,43 @@
 #include <stdlib.h>
 #include "Functions.h"
 
+#WORD TRISB=0xFFFF
 void main(void)
 {	
-	printf("System enabled\n\r");
-	ADC_Init();
+	//printf("System enabled\n\r");
 	Motor_Init(PWM_PERIOD);
-    //enable_interrupts(INT_RDA);
-
-	setup_motor_pwm(3,MPWM_FREE_RUN,64,0,9999); 
-    set_motor_unit(3,3,MPWM_INDEPENDENT | MPWM_ENABLE_H | MPWM_FAULT_NO_CHANGE,0,0); 
-    set_motor_pwm_duty(3,3,910); //set PWM 3 to 1000us 
-	delay_ms(4000);
-    set_motor_pwm_duty(3,3,425); //set PWM 3 to 1000us
+    //enable_interrupts(INT_RDA);		
+	enable_interrupts(INT_EXT0);
+	ext_int_edge(L_TO_H);
+	//setup_motor_pwm(2,MPWM_FREE_RUN,64,0,9999); 
+    //set_motor_unit(2,2,MPWM_INDEPENDENT | MPWM_ENABLE_H | MPWM_FAULT_NO_CHANGE,0,0); 
+    //set_motor_pwm_duty(2,2,910); //set PWM 3 to 1000us 
+	//delay_ms(4000);
+    //set_motor_pwm_duty(2,2,425); //set PWM 3 to 1000us
 
     while(true)
 	{
 		Set_Motor_Duty(0,0);
-		while(!input_state(PIN_D8) )//&& !RUN)   //While loop used for waiting an input high  in D8 to start
+		//set_motor_pwm_duty(2,2,500);
+		while(!RUN )//&& !RUN)   //While loop used for waiting an input high  in D8 to start
    		{
-			output_toggle(PIN_D5);
+			output_toggle(PIN_E3);
       		delay_ms(250);
    		}
-    	set_motor_pwm_duty(3,3,1500); //set PWM 3 to 1000us 
-		output_high(PIN_D5);
+    	//set_motor_pwm_duty(2,2,t_speed); //set PWM 3 to 1000us 
+		//output_high(PIN_E2);
 		delay_ms(2000);
 
 		while(RUN){
-			//output_toggle(PIN_D5);
-			Read_Sensors(sensors_ADC);
-			Digitalize_Array(Sensors_ADC,Sensors_BIN,Black_Limit,0,14);
-			Get_Average_Center(Sensors_BIN,2,12,&Center);  
-         	//Read_Sensors_Digital(sensors_BIN);
-         	//Get_Average_Center_Digital(sensors_BIN,2,12,&center); 
+			//output_toggle(PIN_E2); 
+         	Read_Sensors_Digital(sensors_BIN);
+         	Get_Average_Center_Digital(sensors_BIN,2,12,&center); 
          	if(center==-1)	center=last_center;
 			Print_Center(center);
 		 	last_center=center;
       	 	error=SET_POINT-center;
 		 	derivative=error-last_error;
+			//if(derivative<-6||derivative>6) {derivative=0; error=last_error;}
 		 	integral=integral+(error/10);
 	     	correction=error*(KP)+derivative*(KD)+integral*(KI);
 		 	last_error=error;

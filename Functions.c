@@ -26,34 +26,34 @@ void Set_Motor_Duty(int16 Left, int16 Right)
 	if(Left<0)       
     {   
  	   if(Left<-PWM_PERIOD )       Left=-PWM_PERIOD ;
-		set_pwm_duty(1, 0); // M2 Duty 25%  izquierdo
-		set_pwm_duty(2, (int16)-Left); // M2 Duty 25%  izquierdo      
+		set_pwm_duty(3, 0); // M2 Duty 25%  izquierdo
+		set_pwm_duty(4, (int16)-Left); // M2 Duty 25%  izquierdo      
 	}
 	if(Left>=0)       
 	{   
 		if(Left>PWM_PERIOD )       Left=PWM_PERIOD ;
-		set_pwm_duty(1, (int16)Left); // M2 Duty 25%  izquierdo
-		set_pwm_duty(2, 0); // M2 Duty 25%  izquierdo      
+		set_pwm_duty(3, (int16)Left); // M2 Duty 25%  izquierdo
+		set_pwm_duty(4, 0); // M2 Duty 25%  izquierdo      
 	}
 	if(Right<0)
 	{
 		if(Right<-PWM_PERIOD )    Right=-PWM_PERIOD ;
-		set_pwm_duty(3, (int16)-Right); // M1 Duty 25% 
-		set_pwm_duty(4, 0); // M1 Duty 25% 
+		set_pwm_duty(1, (int16)-Right); // M1 Duty 25% 
+		set_pwm_duty(2, 0); // M1 Duty 25% 
 	}
 	if(Right>=0)
 	{
 		if(Right>PWM_PERIOD )    Right=PWM_PERIOD ;
-		set_pwm_duty(3, 0); // M1 Duty 25% 
-		set_pwm_duty(4,(int16)Right); // M1 Duty 25% 
+		set_pwm_duty(1, 0); // M1 Duty 25% 
+		set_pwm_duty(2,(int16)Right); // M1 Duty 25% 
 	}
 }
 
 void Print_Center(int16 center)
 {
-	if(center<16 && center>=0)   { output_low(PIN_D4);		output_high(PIN_D5);}
-	if(center>16)   				{ output_high(PIN_D4);		output_low(PIN_D5);}
-	if(center==16)   			{ output_low(PIN_D4);		output_low(PIN_D5);} 
+	if(center<16 && center>=0)  { output_low(PIN_E3);		output_high(PIN_E4);}
+	if(center>16)   			{ output_high(PIN_E3);		output_low(PIN_E4);}
+	if(center==16)   			{ output_low(PIN_E3);		output_low(PIN_E4);} 
 }
 
 void Read_Sensors_Digital(int16* value_array)
@@ -135,7 +135,7 @@ void Get_Average_Center_Digital(int16* array_BIN,int st_index,int end_index,int1
 	int16 pixels_w=0,values_w=0;
 	for(i=st_index;i<=end_index;i++)
 	{	
-		if(*(array_BIN+i)==1)
+		if(*(array_BIN+i)==0)
 			{
 				values_w=values_w+((i+1)*2);
 				pixels_w=pixels_w+1;
@@ -234,8 +234,18 @@ void isr()
 		KI=KI*.01;
 		printf("KD=%u value=(x0.1)",(int16)KD);
 		Get_Value(&KD); 
-		KD=KD*.1;   
+		KD=KD*.1; 
+		printf("t_speed=%u value(ms)=",t_speed);
+		Get_Value_L(&t_speed);  
 		RUN=0;
 	}	
 	output_toggle(PIN_D5);
+}
+
+
+#INT_EXT0
+void ext_isr()
+{	
+	RUN=!RUN;
+	delay_ms(500);//printf("Ext int\n\r");
 }
