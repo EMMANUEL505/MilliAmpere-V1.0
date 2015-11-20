@@ -132,16 +132,19 @@ void Digitalize_Array(int16* array_ADC,int16* array_BIN,int16 limit,int st_index
 void Get_Average_Center_Digital(int16* array_BIN,int st_index,int end_index,int16* center)
 {
 	int i=0;
-	int16 pixels_w=0,values_w=0;
+	int16 pixels_w=0,values_w=0,bars=0;
 	for(i=st_index;i<=end_index;i++)
 	{	
 		if(*(array_BIN+i)==0)
 			{
+				//if(bars==0) bars=1;
+				//if(bars>1)	bars=3;
 				values_w=values_w+((i+1)*2);
 				pixels_w=pixels_w+1;
 			}
+		//else if(bars==1&&*(array_BIN+i)==1) bars=2;
 	}
-	if(pixels_w!=0 ) *center=values_w/pixels_w;
+	if(pixels_w!=0 /*&& bars<3*/ ) *center=values_w/pixels_w;
 	else *center=-1;
 }
 
@@ -231,15 +234,11 @@ void isr()
 		Get_Value(&KP);	
 		printf("KI=%u value(x0.01)=",(int16)KI);
 		Get_Value(&KI);
-		KI=KI*.01;
 		printf("KD=%u value=(x0.1)",(int16)KD);
-		Get_Value(&KD); 
-		KD=KD*.1; 
-		printf("t_speed=%u value(ms)=",t_speed);
-		Get_Value_L(&t_speed);  
+		Get_Value(&KD);  
 		RUN=0;
 	}	
-	output_toggle(PIN_D5);
+	output_toggle(PIN_E2);
 }
 
 
